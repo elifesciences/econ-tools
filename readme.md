@@ -20,3 +20,5 @@ Options:
 *  -p PREFIX, --prefix=PREFIX   - only feed keys with the given prefix
 *  -r RATE, --rate=RATE  - how many seconds between messages
 *  -f FILTER, --filter=FILTER  - filter regex to match against keys
+
+The filter option is more flexible than the prefix option but less efficient as the keys are filtered on the client
