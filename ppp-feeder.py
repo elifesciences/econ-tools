@@ -1,8 +1,10 @@
 from optparse import OptionParser
 from boto.s3.connection import S3Connection
 from boto.sqs.connection import SQSConnection
-import time
-import re
+from datetime import datetime
+from time import sleep
+from re import match
+from json import dumps
 
 
 def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter):
@@ -15,7 +17,7 @@ def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter):
 
     for key in keys:
         initiate_ppp(queue, key)
-        time.sleep(rate)
+        sleep(rate)
 
 
 def get_queue(queue_name):
@@ -37,14 +39,28 @@ def get_filtered_keys(bucketname, prefix, key_filter):
         valid = True
         if prefix is not None and not key.name.startswith(prefix):
             valid = False
-        if key_filter is not None and not re.match(key_filter, key.name):
+        if key_filter is not None and not match(key_filter, key.name):
             valid = False
         if valid:
             yield key
 
 
 def initiate_ppp(queue, key):
-    pass
+
+    file_info = {
+        'event_name': 'ObjectCreated:Put',
+        'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
+        'bucket_name': key.bucket.name,
+        'file_name': key.name,
+        'file_etag': key.etag,
+        'file_size': key.size
+    }
+    message = {
+        'workflow_name': 'PublishPerfectArticle',
+        'workflow_data': file_info
+    }
+
+    print dumps(message) + "\n\n"
 
 
 def get_options():

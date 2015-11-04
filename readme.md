@@ -13,7 +13,7 @@ You must set the following environment variables before running the program (AWS
 
 Usage:
 ppp-feeder.py [options] bucket_name
-
+    
 Options:
 
 *  -h, --help  - show this help message and exit
