@@ -52,7 +52,7 @@ def initiate_ppp(queue, key):
         'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
         'bucket_name': key.bucket.name,
         'file_name': key.name,
-        'file_etag': key.etag,
+        'file_etag': key.etag.strip("\""),
         'file_size': key.size
     }
     message = {
