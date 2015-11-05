@@ -12,7 +12,7 @@ You must set the following environment variables before running the program (AWS
 ### Operation
 
 Usage:
-ppp-feeder.py [options] bucket_name
+ppp-feeder.py [options] bucket_name workflow_starter_queue_name
     
 Options:
 
