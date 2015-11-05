@@ -9,8 +9,9 @@ from json import dumps
 
 def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter):
 
-    print "feeding any keys in %s with prefix %s matching %s at a rate of 1 every %i seconds" % (
-        bucket_name, prefix, key_filter, rate)
+    # TODO : tidy message when not all parameters relevant
+    print "feeding any keys in %s with prefix %s matching %s at a rate of 1 every %i seconds to %s\n\n" % (
+        bucket_name, prefix, key_filter, rate, queue_name)
 
     queue = get_queue(queue_name)
     keys = get_filtered_keys(bucket_name, prefix, key_filter)
@@ -60,8 +61,10 @@ def initiate_ppp(queue, key):
         'workflow_data': file_info
     }
 
-    print dumps(message) + "\n\n"
+    # TODO : temp
+    print "\n" + dumps(message) + "\n"
 
+    # TODO : send the message!
 
 def get_options():
 
