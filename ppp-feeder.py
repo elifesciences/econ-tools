@@ -1,35 +1,48 @@
 from optparse import OptionParser
 from boto.s3.connection import S3Connection
-from boto.sqs.connection import SQSConnection
 from datetime import datetime
-from time import sleep
-from re import match
-from json import dumps
+import boto.sqs
+import boto.sqs.connection
+import time
+import re
+import json
+import os
+import sys
 
 
-def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter):
+def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter, working):
 
-    # TODO : tidy message when not all parameters relevant
-    print "feeding any keys in %s with prefix %s matching %s at a rate of 1 every %i seconds to %s\n\n" % (
-        bucket_name, prefix, key_filter, rate, queue_name)
+    message = "\nFeeding any keys in %s " % bucket_name
+    if prefix is not None:
+        message += "with prefix %s " % prefix
+    if key_filter is not None:
+        message += "with keys matching %s " % key_filter
+    message += "at a rate of 1 every %i seconds to %s\n" % (rate, queue_name)
+    print message
 
     queue = get_queue(queue_name)
     keys = get_filtered_keys(bucket_name, prefix, key_filter)
 
+    count = 0
     for key in keys:
         initiate_ppp(queue, key)
-        sleep(rate)
+        count += 1
+        if working:
+            sys.stdout.write('.')
+        time.sleep(rate)
+    print "\n\nFed %s keys\n" % count
 
 
 def get_queue(queue_name):
-
-    sqs_conn = SQSConnection()
+    sqs_conn = boto.sqs.connect_to_region(os.environ['AWS_DEFAULT_REGION'])
     queue = sqs_conn.get_queue(queue_name)
+    if queue is None:
+        print "Could not obtain workflow starter queue %s\n" % queue_name
+        exit()
     return queue
 
 
 def get_filtered_keys(bucketname, prefix, key_filter):
-
     conn = S3Connection()
     bucket = conn.get_bucket(bucketname)
     keys = bucket.list(prefix=prefix)
@@ -40,14 +53,13 @@ def get_filtered_keys(bucketname, prefix, key_filter):
         valid = True
         if prefix is not None and not key.name.startswith(prefix):
             valid = False
-        if key_filter is not None and not match(key_filter, key.name):
+        if key_filter is not None and not re.match(key_filter, key.name):
             valid = False
         if valid:
             yield key
 
 
 def initiate_ppp(queue, key):
-
     file_info = {
         'event_name': 'ObjectCreated:Put',
         'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
@@ -61,13 +73,12 @@ def initiate_ppp(queue, key):
         'workflow_data': file_info
     }
 
-    # TODO : temp
-    print "\n" + dumps(message) + "\n"
+    msg = boto.sqs.connection.Message()
+    msg.set_body(json.dumps(message))
+    queue.write(msg)
 
-    # TODO : send the message!
 
 def get_options():
-
     usage = "usage: %prog [options] bucket_name workflow_starter_queue"
     parser = OptionParser(usage=usage)
     parser.add_option("-p", "--prefix", default=None, action="store", type="string", dest="prefix",
@@ -76,6 +87,8 @@ def get_options():
                       dest="rate", help="how many seconds between messages")
     parser.add_option("-f", "--filter", default=None, action="store", type="string", dest="filter",
                       help="filter regex to match against keys")
+    parser.add_option("-w", "--working", default=False, action="store_true", dest="working",
+                      help="show progress indicator to indicate working")
 
     opts, ags = parser.parse_args()
     if len(ags) != 2:
@@ -85,8 +98,7 @@ def get_options():
 
 
 if __name__ == "__main__":
-
     options, args = get_options()
 
     # args[0] = bucket_name, args[1] = queue_name
-    feed_ppp(args[0], args[1], options.rate, options.prefix, options.filter)
+    feed_ppp(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
