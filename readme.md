@@ -2,7 +2,7 @@
 
 ### Configuration
 
-You must set the following environment variables before running the program (AWS_PROFILE is optiona):
+You must set the following environment variables before running the program (AWS_PROFILE is optional):
 
 * AWS_ACCESS_KEY_ID The access key for your AWS account.
 * AWS_SECRET_ACCESS_KEY The secret key for your AWS account.
