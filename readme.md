@@ -2,12 +2,11 @@
 
 ### Configuration
 
-You must set the following environment variables before running the program (AWS_PROFILE is optional):
+You must set the following environment variables before running the program:
 
 * AWS_ACCESS_KEY_ID The access key for your AWS account.
 * AWS_SECRET_ACCESS_KEY The secret key for your AWS account.
 * AWS_DEFAULT_REGION The default region to use, e.g. us-east-1.
-* AWS_PROFILE The default credential and configuration profile to use, if any. (optional)
 
 ### Operation
 
