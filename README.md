@@ -1,5 +1,11 @@
 # ppp-feeder
 
+### Installation
+
+ppp-feeder requires boto. 
+
+    pip install -r requirements.txt 
+
 ### Configuration
 
 You must set the following environment variables before running the program:
