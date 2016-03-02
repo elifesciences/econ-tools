@@ -1,5 +1,10 @@
 # ppp-feeder
 
+### Overview 
+
+ppp-feeder sends a JSON message into a SQS queue which triggers an [AWS SWF](https://aws.amazon.com/swf/) workflow. This workflow looks in the S3 bucket that is passed to ppp-feeder for a zip file whith the key that is passed to ppp-feeder. This article zip file if found is then processed by the eLife Continuum publishing workflow. 
+
+
 ### Installation
 
 ppp-feeder requires boto. 
