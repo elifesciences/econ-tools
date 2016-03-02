@@ -11,7 +11,7 @@ You must set the following environment variables before running the program:
 ### Operation
 
 Usage:
-ppp-feeder.py [options] bucket_name workflow_starter_queue_name, e.g.
+ppp-feeder.py [options] bucket_name workflow_starter_queue_name, e.g.  
     >$ python ppp-feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue 
     
 Options:
