@@ -1,3 +1,8 @@
+
+"""
+econ-article-feeder.py - feeds arbitrary article zip files into the continuum publishing workflow
+"""
+
 from optparse import OptionParser
 from boto.s3.connection import S3Connection
 from datetime import datetime
@@ -10,7 +15,7 @@ import os
 import sys
 
 
-def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter, working):
+def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
@@ -25,7 +30,7 @@ def feed_ppp(bucket_name, queue_name, rate, prefix, key_filter, working):
 
     count = 0
     for key in keys:
-        initiate_ppp(queue, key)
+        initiate_econ_feed(queue, key)
         count += 1
         if working:
             sys.stdout.write('.')
@@ -59,7 +64,7 @@ def get_filtered_keys(bucketname, prefix, key_filter):
             yield key
 
 
-def initiate_ppp(queue, key):
+def initiate_econ_feed(queue, key):
     file_info = {
         'event_name': 'ObjectCreated:Put',
         'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
@@ -101,4 +106,4 @@ if __name__ == "__main__":
     options, args = get_options()
 
     # args[0] = bucket_name, args[1] = queue_name
-    feed_ppp(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
+    feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
