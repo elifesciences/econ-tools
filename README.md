@@ -35,11 +35,11 @@ An example use for this is updating the publication-status property of an articl
 ### Operation
 
 Usage:
-econ-dashprop.py dashboard_queue_name article_id version property_name property_value 
+    econ-dashprop.py dashboard_queue_name article_id version property_name property_value 
 
 example:
 
-    $ python econ-dashprop.py test-event-property-incoming-queue 00288 publication-status hidden
+    $ python econ-dashprop.py test-event-property-incoming-queue 00288 1 publication-status hidden
 
 ## econ-article-feeder
 
@@ -48,7 +48,7 @@ econ-article-feeder sends a JSON message into a SQS queue which triggers an [AWS
 ### Operation
 
 Usage:
-econ-article-feeder.py [options] bucket_name workflow_starter_queue_name
+    econ-article-feeder.py [options] bucket_name workflow_starter_queue_name
 
     $ python econ-article-feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue 
     
