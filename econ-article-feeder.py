@@ -15,7 +15,7 @@ import os
 import sys
 
 
-def feed_econ(bucket_name, queue_name, workflow_name, rate, prefix, key_filter, working):
+def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working, workflow_name="PublishPerfectArticle"):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
@@ -23,8 +23,7 @@ def feed_econ(bucket_name, queue_name, workflow_name, rate, prefix, key_filter, 
     if key_filter is not None:
         message += "with keys matching %s " % key_filter
     message += "at a rate of 1 every %i seconds to %s.\n" % (rate, queue_name)
-    if workflow_name is not None:
-        message += "Workflow provided: %s" % workflow_name
+    message += "Feeding Workflow: %s" % workflow_name
     print message
 
     queue = get_queue(queue_name)
@@ -76,9 +75,6 @@ def initiate_econ_feed(queue, key, workflow_name):
         'file_size': key.size
     }
 
-    if workflow_name is None:
-        workflow_name = 'PublishPerfectArticle'
-
     message = {
         'workflow_name': workflow_name,
         'workflow_data': file_info
@@ -111,9 +107,9 @@ def get_options():
 if __name__ == "__main__":
     options, args = get_options()
 
-    workflow_name = None
     if len(args) > 2:
-        workflow_name = args[2]
-
-    # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
-    feed_econ(args[0], args[1], workflow_name, options.rate, options.prefix, options.filter, options.working)
+        # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
+        feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working, args[2])
+    else:
+        # args[0] = bucket_name, args[1] = queue_name
+        feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
