@@ -15,14 +15,16 @@ import os
 import sys
 
 
-def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working):
+def feed_econ(bucket_name, queue_name, workflow_name, rate, prefix, key_filter, working):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
         message += "with prefix %s " % prefix
     if key_filter is not None:
         message += "with keys matching %s " % key_filter
-    message += "at a rate of 1 every %i seconds to %s\n" % (rate, queue_name)
+    message += "at a rate of 1 every %i seconds to %s.\n" % (rate, queue_name)
+    if workflow_name is not None:
+        message += "Workflow provided: %s" % workflow_name
     print message
 
     queue = get_queue(queue_name)
@@ -30,7 +32,7 @@ def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working):
 
     count = 0
     for key in keys:
-        initiate_econ_feed(queue, key)
+        initiate_econ_feed(queue, key, workflow_name)
         count += 1
         if working:
             sys.stdout.write('.')
@@ -64,7 +66,7 @@ def get_filtered_keys(bucketname, prefix, key_filter):
             yield key
 
 
-def initiate_econ_feed(queue, key):
+def initiate_econ_feed(queue, key, workflow_name):
     file_info = {
         'event_name': 'ObjectCreated:Put',
         'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
@@ -73,8 +75,12 @@ def initiate_econ_feed(queue, key):
         'file_etag': key.etag.strip("\""),
         'file_size': key.size
     }
+
+    if workflow_name is None:
+        workflow_name = 'PublishPerfectArticle'
+
     message = {
-        'workflow_name': 'PublishPerfectArticle',
+        'workflow_name': workflow_name,
         'workflow_data': file_info
     }
 
@@ -84,7 +90,7 @@ def initiate_econ_feed(queue, key):
 
 
 def get_options():
-    usage = "usage: %prog [options] bucket_name workflow_starter_queue"
+    usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
     parser = OptionParser(usage=usage)
     parser.add_option("-p", "--prefix", default=None, action="store", type="string", dest="prefix",
                       help="only feed keys with the given prefix")
@@ -96,7 +102,7 @@ def get_options():
                       help="show progress indicator to indicate working")
 
     opts, ags = parser.parse_args()
-    if len(ags) != 2:
+    if (len(ags) < 2) and (len(ags) > 3):
         parser.error("incorrect number of arguments")
 
     return opts, ags
@@ -105,5 +111,9 @@ def get_options():
 if __name__ == "__main__":
     options, args = get_options()
 
-    # args[0] = bucket_name, args[1] = queue_name
-    feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
+    workflow_name = None
+    if len(args) > 2:
+        workflow_name = args[2]
+
+    # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
+    feed_econ(args[0], args[1], workflow_name, options.rate, options.prefix, options.filter, options.working)
