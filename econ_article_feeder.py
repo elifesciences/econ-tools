@@ -15,7 +15,7 @@ import os
 import sys
 
 
-def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working, workflow_name="PublishPerfectArticle"):
+def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="PublishPerfectArticle"):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
@@ -28,6 +28,7 @@ def feed_econ(bucket_name, queue_name, rate, prefix, key_filter, working, workfl
 
     queue = get_queue(queue_name)
     keys = get_filtered_keys(bucket_name, prefix, key_filter)
+    print keys
 
     count = 0
     for key in keys:
