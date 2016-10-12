@@ -69,7 +69,7 @@ def get_filtered_keys(bucketname, prefix, key_filter):
 def initiate_econ_feed(queue, key, workflow_name):
     file_info = {
         'event_name': 'ObjectCreated:Put',
-        'event_time': datetime.now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
+        'event_time': now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
         'bucket_name': key.bucket.name,
         'file_name': key.name,
         'file_etag': key.etag.strip("\""),
@@ -85,6 +85,8 @@ def initiate_econ_feed(queue, key, workflow_name):
     msg.set_body(json.dumps(message))
     queue.write(msg)
 
+def now():
+    return datetime.now()
 
 def get_options():
     usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
