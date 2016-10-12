@@ -1,1 +1,8 @@
 boto==2.34.0
+coverage==4.2
+funcsigs==1.0.2
+mock==2.0.0
+pbr==1.10.0
+py==1.4.31
+pytest==3.0.3
+six==1.10.0

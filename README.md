@@ -27,30 +27,32 @@ This environment should be activated when running any of the tools, e.g.
 
     source venv/bin/activate
 
-## econ-dashprop
+## econ_dashprop
 
-econ-dashboard string properties against versions of articles within the eLife Continuum Dashboard.
+econ_dashboard string properties against versions of articles within the eLife Continuum Dashboard.
 An example use for this is updating the publication-status property of an article to indicate it should be temporarily hidden.
 
 ### Operation
 
 Usage:
-    econ-dashprop.py dashboard_queue_name article_id version property_name property_value 
+```
+    econ_dashprop.py dashboard_queue_name article_id version property_name property_value 
 
-example:
+    $ python econ_dashprop.py test-event-property-incoming-queue 00288 1 publication-status hidden
+``` 
 
-    $ python econ-dashprop.py test-event-property-incoming-queue 00288 1 publication-status hidden
+## econ_article_feeder
 
-## econ-article-feeder
-
-econ-article-feeder sends a JSON message into a SQS queue which triggers an [AWS SWF](https://aws.amazon.com/swf/) workflow. This workflow looks in the S3 bucket that is passed to econ-article-feeder for a zip file with the key that is passed to econ-article-feeder. This article zip file if found is then processed by the eLife Continuum publishing workflow.
+econ_article_feeder sends a JSON message into a SQS queue which triggers an [AWS SWF](https://aws.amazon.com/swf/) workflow. This workflow looks in the S3 bucket that is passed to econ_article_feeder for a zip file with the key that is passed to econ_article_feeder. This article zip file if found is then processed by the eLife Continuum publishing workflow.
 
 ### Operation
 
 Usage:
-    econ-article-feeder.py [options] bucket_name workflow_starter_queue_name
+```
+    econ_article_feeder.py [options] bucket_name workflow_starter_queue_name workflow_name
 
-    $ python econ-article-feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue 
+    $ python econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue IngestArticleZip
+```
     
 Options:
 
