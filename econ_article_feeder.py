@@ -1,6 +1,6 @@
 
 """
-econ-article-feeder.py - feeds arbitrary article zip files into the continuum publishing workflow
+econ_article_feeder.py - feeds arbitrary article zip files into the continuum publishing workflow
 """
 
 from optparse import OptionParser

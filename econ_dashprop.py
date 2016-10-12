@@ -1,6 +1,6 @@
 
 """
-econ-dashprop.py - Sets string properties against versions of articles within the eLife Continuum Dashboard
+econ_dashprop.py - Sets string properties against versions of articles within the eLife Continuum Dashboard
 """
 
 from optparse import OptionParser

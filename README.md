@@ -27,7 +27,7 @@ This environment should be activated when running any of the tools, e.g.
 
     source venv/bin/activate
 
-## econ-dashprop
+## econ_dashprop
 
 econ_dashboard string properties against versions of articles within the eLife Continuum Dashboard.
 An example use for this is updating the publication-status property of an article to indicate it should be temporarily hidden.
@@ -35,11 +35,11 @@ An example use for this is updating the publication-status property of an articl
 ### Operation
 
 Usage:
-econ-dashprop.py dashboard_queue_name article_id version property_name property_value 
+```
+    econ_dashprop.py dashboard_queue_name article_id version property_name property_value 
 
-example:
-
-    $ python econ-dashprop.py test-event-property-incoming-queue 00288 publication-status hidden
+    $ python econ_dashprop.py test-event-property-incoming-queue 00288 1 publication-status hidden
+``` 
 
 ## econ_article_feeder
 
@@ -48,9 +48,11 @@ econ_article_feeder sends a JSON message into a SQS queue which triggers an [AWS
 ### Operation
 
 Usage:
-econ_article_feeder.py [options] bucket_name workflow_starter_queue_name
+```
+    econ_article_feeder.py [options] bucket_name workflow_starter_queue_name workflow_name
 
-    $ python econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue 
+    $ python econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue IngestArticleZip
+```
     
 Options:
 
