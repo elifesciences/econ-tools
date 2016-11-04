@@ -15,7 +15,7 @@ import os
 import sys
 
 
-def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="PublishPerfectArticle"):
+def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="IngestArticleZip"):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
