@@ -42,6 +42,9 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
 
 def get_queue(queue_name):
     sqs_conn = boto.sqs.connect_to_region(os.environ['AWS_DEFAULT_REGION'])
+    if sqs_conn is None:
+        print "Cannot connect to SQS for region %s" % os.environ['AWS_DEFAULT_REGION']
+        sys.exit(1)
     queue = sqs_conn.get_queue(queue_name)
     if queue is None:
         print "Could not obtain workflow starter queue %s\n" % queue_name
@@ -88,8 +91,9 @@ def initiate_econ_feed(queue, key, workflow_name):
 def now():
     return datetime.now()
 
+usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
+
 def get_options():
-    usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
     parser = OptionParser(usage=usage)
     parser.add_option("-p", "--prefix", default=None, action="store", type="string", dest="prefix",
                       help="only feed keys with the given prefix")
@@ -113,6 +117,9 @@ if __name__ == "__main__":
     if len(args) > 2:
         # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working, args[2])
-    else:
+    elif len(args) == 2:
         # args[0] = bucket_name, args[1] = queue_name
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
+    else:
+        print usage
+        sys.exit(1)
