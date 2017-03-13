@@ -38,7 +38,7 @@ Usage:
 ```
     econ_dashprop.py dashboard_queue_name article_id version property_name property_value 
 
-    $ python econ_dashprop.py test-event-property-incoming-queue 00288 1 publication-status hidden
+    $ python econ_dashprop.py prefix-event-property-incoming-queue 00288 1 publication-status hidden
 ``` 
 
 ## econ_article_feeder
