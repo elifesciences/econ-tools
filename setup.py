@@ -15,7 +15,7 @@ setup(name='econtools',
     install_requires=install_requires,
     url='https://github.com/elifesciences/econ-tools',
     maintainer='eLife Sciences Publications Ltd.',
-    maintainer_email='py@elifesciences.org',
+    maintainer_email='tech-team@elifesciences.org',
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
