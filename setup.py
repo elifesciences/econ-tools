@@ -7,7 +7,7 @@ with open('requirements.txt') as f:
     install_requires = f.read().splitlines()
 
 setup(name='econtools',
-    version='0.1',
+    version=econtools.__version__,
     description='Tools for using article data in Python.',
     long_description=readme,
     packages=['econtools'],
