@@ -16,7 +16,7 @@ You must set the following environment variables before running the program:
 * AWS_SECRET_ACCESS_KEY The secret key for your AWS account.
 * AWS_DEFAULT_REGION The default region to use, e.g. us-east-1.
 
-A python developemnet environment is required. It is recommended to create a python virtual ennvironment and 
+A python development environment is required. It is recommended to create a python virtual environment and 
 install dependencies from requirements.txt .e.g.
  
     virtualenv venv
@@ -38,7 +38,7 @@ Usage:
 ```
     econ_dashprop.py dashboard_queue_name article_id version property_name property_value 
 
-    $ python econ_dashprop.py prefix-event-property-incoming-queue 00288 1 publication-status hidden
+    $ python econtools/econ_dashprop.py prefix-event-property-incoming-queue 00288 1 publication-status hidden
 ``` 
 
 ## econ_article_feeder
@@ -51,7 +51,7 @@ Usage:
 ```
     econ_article_feeder.py [options] bucket_name workflow_starter_queue_name workflow_name
 
-    $ python econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue IngestArticleZip
+    $ python econtools/econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue IngestArticleZip
 ```
     
 Options:

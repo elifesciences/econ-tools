@@ -5,12 +5,12 @@ from mock import MagicMock, call, patch
 from boto.s3.bucket import Bucket
 from boto.s3.key import Key
 from boto.sqs.message import Message
-import econ_article_feeder
+from econtools import econ_article_feeder
 
 class TestFeeder(unittest.TestCase):
-    @patch('econ_article_feeder.get_queue')
-    @patch('econ_article_feeder.get_filtered_keys')
-    @patch('econ_article_feeder.initiate_econ_feed')
+    @patch('econtools.econ_article_feeder.get_queue')
+    @patch('econtools.econ_article_feeder.get_filtered_keys')
+    @patch('econtools.econ_article_feeder.initiate_econ_feed')
     @patch('time.sleep')
     def test_feed_two_articles(self, sleep, initiate_econ_feed, get_filtered_keys, get_queue):
         queue = MagicMock()
@@ -35,7 +35,7 @@ class TestFeeder(unittest.TestCase):
             ]
         )
 
-    @patch('econ_article_feeder.now')
+    @patch('econtools.econ_article_feeder.now')
     def test_feeding_sends_an_sqs_message(self, now):
         now.return_value = datetime.strptime('2016-01-01', '%Y-%m-%d')
         queue = MagicMock()
