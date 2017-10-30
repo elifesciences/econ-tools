@@ -24,11 +24,11 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
         message += "with keys matching %s " % key_filter
     message += "at a rate of 1 every %i seconds to %s.\n" % (rate, queue_name)
     message += "Feeding Workflow: %s" % workflow_name
-    print message
+    print(message)
 
     queue = get_queue(queue_name)
     keys = get_filtered_keys(bucket_name, prefix, key_filter)
-    print keys
+    print(keys)
 
     count = 0
     for key in keys:
@@ -37,14 +37,14 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
         if working:
             sys.stdout.write('.')
         time.sleep(rate)
-    print "\n\nFed %s keys\n" % count
+    print("\n\nFed %s keys\n" % count)
 
 
 def get_queue(queue_name):
     sqs_conn = boto.sqs.connect_to_region(os.environ['AWS_DEFAULT_REGION'])
     queue = sqs_conn.get_queue(queue_name)
     if queue is None:
-        print "Could not obtain workflow starter queue %s\n" % queue_name
+        print("Could not obtain workflow starter queue %s\n" % queue_name)
         exit()
     return queue
 
