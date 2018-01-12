@@ -27,7 +27,7 @@ def get_args():
     parser = OptionParser(usage=usage)
 
     _, args = parser.parse_args()
-    if (len(args) < 2) or (len(args) > 3):
+    if len(args) != 2:
         parser.error("incorrect number of arguments")
 
     return args
