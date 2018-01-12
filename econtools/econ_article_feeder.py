@@ -13,6 +13,7 @@ import re
 import json
 import os
 import sys
+from econtools.aws import get_queue
 
 
 def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="IngestArticleZip"):
@@ -101,7 +102,7 @@ def get_options():
                       help="show progress indicator to indicate working")
 
     opts, ags = parser.parse_args()
-    if (len(ags) < 2) and (len(ags) > 3):
+    if (len(ags) < 2) or (len(ags) > 3):
         parser.error("incorrect number of arguments")
 
     return opts, ags
