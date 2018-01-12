@@ -102,7 +102,7 @@ def get_options():
                       help="show progress indicator to indicate working")
 
     opts, ags = parser.parse_args()
-    if (len(ags) < 2) or (len(ags) > 3):
+    if len(ags) not in [2, 3]:
         parser.error("incorrect number of arguments")
 
     return opts, ags
