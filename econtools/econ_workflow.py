@@ -3,7 +3,7 @@
 econ_workflow.py - starts arbitrary continuum publishing workflows
 """
 
-from optparse import OptionParser
+from argparse import ArgumentParser
 import json
 import boto.sqs
 import boto.sqs.connection
@@ -24,17 +24,16 @@ def start_workflow(queue_name, workflow_name):
 
 def get_args():
     usage = "usage: %prog workflow_starter_queue IngestArticleZip"
-    parser = OptionParser(usage=usage)
+    parser = ArgumentParser(description="Starts any workflow")
+    parser.add_argument('queue_name', type=str, help='The queue to add the starting message to')
+    parser.add_argument('workflow_name', type=str, help='The workflow type to start')
 
-    _, args = parser.parse_args()
-    if len(args) != 2:
-        parser.error("incorrect number of arguments")
+    return parser.parse_args()
 
-    return args
 
 def main():
     args = get_args()
-    start_workflow(args[0], args[1])
+    start_workflow(args.queue_name, args.workflow_name)
 
 
 if __name__ == "__main__":
