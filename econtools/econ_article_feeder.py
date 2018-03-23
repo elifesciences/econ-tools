@@ -16,7 +16,7 @@ import sys
 from econtools.aws import get_queue
 
 
-def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="IngestArticleZip"):
+def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="InitialArticleZip"):
 
     message = "\nFeeding any keys in %s " % bucket_name
     if prefix is not None:
@@ -90,7 +90,7 @@ def now():
     return datetime.now()
 
 def get_options():
-    usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
+    usage = "usage: %prog [options] bucket_name workflow_starter_queue InitialArticleZip"
     parser = OptionParser(usage=usage)
     parser.add_option("-p", "--prefix", default=None, action="store", type="string", dest="prefix",
                       help="only feed keys with the given prefix")
