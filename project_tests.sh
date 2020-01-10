@@ -2,7 +2,7 @@
 set -e
 
 rm -rf venv
-virtualenv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 pylint -E *.py

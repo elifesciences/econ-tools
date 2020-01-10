@@ -12,14 +12,14 @@ econ-publishing-tools requires boto.
 
 You must set the following environment variables before running the program:
 
-* AWS_ACCESS_KEY_ID The access key for your AWS account.
-* AWS_SECRET_ACCESS_KEY The secret key for your AWS account.
-* AWS_DEFAULT_REGION The default region to use, e.g. us-east-1.
+* `AWS_ACCESS_KEY_ID` The access key for your AWS account.
+* `AWS_SECRET_ACCESS_KEY` The secret key for your AWS account.
+* `AWS_DEFAULT_REGION` The default region to use, e.g. `us-east-1`.
 
 A python development environment is required. It is recommended to create a python virtual environment and 
 install dependencies from requirements.txt .e.g.
  
-    virtualenv venv
+    python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     
