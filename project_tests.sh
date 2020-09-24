@@ -2,9 +2,10 @@
 set -e
 
 rm -rf venv
-virtualenv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-coverage run -m pytest test_feeder.py
-coverage report -m econ_article_feeder.py
+pylint -E *.py
+coverage run -m pytest econtools/test_*.py
+coverage report -m econtools/*.py
 
