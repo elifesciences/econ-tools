@@ -1,7 +1,5 @@
-
-"""
-econ_article_feeder.py - feeds arbitrary article zip files into the continuum publishing workflow
-"""
+"""econ_article_feeder.py
+feeds arbitrary article zip files into the continuum publishing workflow"""
 
 from optparse import OptionParser
 from boto.s3.connection import S3Connection
@@ -11,7 +9,6 @@ import boto.sqs.connection
 import time
 import re
 import json
-import os
 import sys
 from econtools.aws import get_queue
 
@@ -38,19 +35,7 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
         if working:
             sys.stdout.write('.')
         time.sleep(rate)
-    print("\n\nFed %s keys\n" % count)
-
-
-def get_queue(queue_name):
-    sqs_conn = boto.sqs.connect_to_region(os.environ['AWS_DEFAULT_REGION'])
-    if sqs_conn is None:
-        print "Cannot connect to SQS for region %s" % os.environ['AWS_DEFAULT_REGION']
-        sys.exit(1)
-    queue = sqs_conn.get_queue(queue_name)
-    if queue is None:
-        print("Could not obtain workflow starter queue %s\n" % queue_name)
-        exit()
-    return queue
+    print("\n\nFed %s keys\n" % (count,))
 
 
 def get_filtered_keys(bucketname, prefix, key_filter):
@@ -122,5 +107,5 @@ if __name__ == "__main__":
         # args[0] = bucket_name, args[1] = queue_name
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
     else:
-        print usage
+        print(usage)
         sys.exit(1)
