@@ -3,7 +3,7 @@ set -e
 source venv/bin/activate
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: ${0} elife-12345"
+    echo "Usage: ${0} elife-12345-vor-r1"
 fi
 
-AWS_DEFAULT_REGION=us-east-1 python econ_article_feeder.py --prefix $1 ct-elife-production-final ct-workflow-starter-queue IngestArticleZip
+PYTHONPATH=. AWS_DEFAULT_REGION=us-east-1 python econtools/econ_article_feeder.py --prefix $1 -r 1 ct-elife-production-final ct-workflow-starter-queue InitialArticleZip

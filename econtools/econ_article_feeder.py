@@ -77,7 +77,7 @@ def initiate_econ_feed(queue, key, workflow_name):
 def now():
     return datetime.now()
 
-usage = "usage: %prog [options] bucket_name workflow_starter_queue IngestArticleZip"
+usage = "usage: %prog [options] bucket_name workflow_starter_queue InitialArticleZip"
 
 def get_options():
     parser = OptionParser(usage=usage)
