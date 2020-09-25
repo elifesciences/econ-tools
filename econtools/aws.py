@@ -10,5 +10,5 @@ def get_queue(queue_name):
     queue = sqs_conn.get_queue(queue_name)
     if queue is None:
         print("Could not obtain workflow starter queue %s\n" % (queue_name,))
-        exit()
+        sys.exit(2)
     return queue

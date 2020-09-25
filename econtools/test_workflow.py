@@ -4,7 +4,7 @@ from mock import MagicMock, patch
 from econtools import econ_workflow
 
 class TestWorkflow(unittest.TestCase):
-    @patch('econtools.econ_workflow.get_queue')
+    @patch('econtools.aws.get_queue')
     def test_feed_two_articles(self, get_queue):
         queue = MagicMock()
         get_queue.return_value = queue
