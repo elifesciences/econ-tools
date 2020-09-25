@@ -23,8 +23,8 @@ def start_workflow(queue_name, workflow_name, workflow_data={}):
     queue.write(msg)
 
 def get_args():
-    usage = "usage: %prog workflow_starter_queue IngestArticleZip"
-    parser = ArgumentParser(description="Starts any workflow")
+    usage = "example usage: %prog workflow_starter_queue IngestArticleZip"
+    parser = ArgumentParser(description="Starts any workflow. " + usage)
     parser.add_argument('queue_name', type=str, help='The queue to add the starting message to')
     parser.add_argument('workflow_name', type=str, help='The workflow type to start')
     parser.add_argument('workflow_data', type=str, help='The workflow data in JSON format e.g. {"a": 42}', nargs='?', default='{}')

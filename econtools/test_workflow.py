@@ -1,7 +1,6 @@
 import json
 import unittest
 from mock import MagicMock, patch
-from boto.sqs.message import Message
 from econtools import econ_workflow
 
 class TestWorkflow(unittest.TestCase):

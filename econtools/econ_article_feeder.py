@@ -1,7 +1,5 @@
-
-"""
-econ_article_feeder.py - feeds arbitrary article zip files into the continuum publishing workflow
-"""
+"""econ_article_feeder.py
+feeds arbitrary article zip files into the continuum publishing workflow"""
 
 from optparse import OptionParser
 from boto.s3.connection import S3Connection
@@ -11,7 +9,6 @@ import boto.sqs.connection
 import time
 import re
 import json
-import os
 import sys
 from econtools.aws import get_queue
 
@@ -38,16 +35,7 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
         if working:
             sys.stdout.write('.')
         time.sleep(rate)
-    print("\n\nFed %s keys\n" % count)
-
-
-def get_queue(queue_name):
-    sqs_conn = boto.sqs.connect_to_region(os.environ['AWS_DEFAULT_REGION'])
-    queue = sqs_conn.get_queue(queue_name)
-    if queue is None:
-        print("Could not obtain workflow starter queue %s\n" % queue_name)
-        exit()
-    return queue
+    print("\n\nFed %s keys\n" % (count,))
 
 
 def get_filtered_keys(bucketname, prefix, key_filter):
@@ -89,8 +77,9 @@ def initiate_econ_feed(queue, key, workflow_name):
 def now():
     return datetime.now()
 
+usage = "usage: %prog [options] bucket_name workflow_starter_queue InitialArticleZip"
+
 def get_options():
-    usage = "usage: %prog [options] bucket_name workflow_starter_queue InitialArticleZip"
     parser = OptionParser(usage=usage)
     parser.add_option("-p", "--prefix", default=None, action="store", type="string", dest="prefix",
                       help="only feed keys with the given prefix")
@@ -114,6 +103,9 @@ if __name__ == "__main__":
     if len(args) > 2:
         # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working, args[2])
-    else:
+    elif len(args) == 2:
         # args[0] = bucket_name, args[1] = queue_name
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
+    else:
+        print(usage)
+        sys.exit(1)

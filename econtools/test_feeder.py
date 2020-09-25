@@ -4,7 +4,6 @@ import unittest
 from mock import MagicMock, call, patch
 from boto.s3.bucket import Bucket
 from boto.s3.key import Key
-from boto.sqs.message import Message
 from econtools import econ_article_feeder
 
 class TestFeeder(unittest.TestCase):
