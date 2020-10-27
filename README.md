@@ -4,7 +4,7 @@ eLife Continuum publishing process tools
 
 ### Installation
 
-`econ-tools` only requires `boto`. A full development environment can be setup using:
+`econ-tools` only requires `boto`. A full development environment can be installed using:
 
     ./install.sh
 
