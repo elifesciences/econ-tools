@@ -22,8 +22,6 @@ You must set the following environment variables before running the program:
 An example use for this is updating the `publication-status` property of an article to indicate it should be temporarily 
 hidden.
 
-### Operation
-
 Usage:
 
     econ_dashprop.py dashboard_queue_name article_id version property_name property_value
@@ -35,8 +33,6 @@ Usage:
 workflow. This workflow looks in the S3 bucket that is passed to `econ_article_feeder` for a zip file with the key that 
 is passed to `econ_article_feeder`. This article zip file, if found, is then processed by the eLife Continuum publishing 
 workflow.
-
-### Operation
 
 Usage:
 
