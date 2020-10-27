@@ -1,6 +1,6 @@
 import json
 import unittest
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 from econtools import econ_workflow
 
 class TestWorkflow(unittest.TestCase):

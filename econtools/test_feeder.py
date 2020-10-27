@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 import unittest
-from mock import MagicMock, call, patch
+from unittest.mock import MagicMock, call, patch
 from boto.s3.bucket import Bucket
 from boto.s3.key import Key
 from econtools import econ_article_feeder
