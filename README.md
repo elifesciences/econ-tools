@@ -25,7 +25,16 @@ hidden.
 Usage:
 
     econ_dashprop.py dashboard_queue_name article_id version property_name property_value
+
+Example:
+
     $ python econtools/econ_dashprop.py prefix-event-property-incoming-queue 00288 1 publication-status hidden
+
+The `publication-status hidden` results in sending the `publication-status` value of `hidden` onto the 
+`event-property-incoming-queue` for article `00288`, version `1`. 
+
+That message is then picked up by the dashboard, which results in hiding version `1` of `00288` from the current list of 
+articles that are errored or in progress.
 
 ## econ_article_feeder
 
