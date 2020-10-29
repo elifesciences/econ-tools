@@ -18,7 +18,7 @@ You must set the following environment variables before running the program:
 
 ## econ_dashprop
 
-`econ_dashboard` string properties against versions of articles within the eLife Continuum Dashboard.
+Sets string properties against versions of articles within the eLife Continuum Dashboard.
 An example use for this is updating the `publication-status` property of an article to indicate it should be temporarily 
 hidden.
 
