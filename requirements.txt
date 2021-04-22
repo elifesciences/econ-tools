@@ -1,21 +1,22 @@
-# file generated 2020-10-27 - see update-dependencies.sh
+# file generated 2021-04-22 - see update-dependencies.sh
 astroid==2.3.3
-attrs==20.2.0
+attrs==20.3.0
 boto==2.49.0
-coverage==5.3
-importlib-metadata==2.0.0
+coverage==5.5
+importlib-metadata==4.0.1
 isort==4.3.21
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
-more-itertools==8.5.0
-packaging==20.4
+more-itertools==8.7.0
+packaging==20.9
 pluggy==0.13.1
-py==1.9.0
+py==1.10.0
 pylint==2.4.4
 pyparsing==2.4.7
 pytest==5.3.5
 six==1.15.0
-typed-ast==1.4.1
+typed-ast==1.4.3
+typing-extensions==3.7.4.3
 wcwidth==0.2.5
 wrapt==1.11.2
-zipp==3.4.0
+zipp==3.4.1
