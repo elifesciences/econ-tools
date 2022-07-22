@@ -25,7 +25,7 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
     print(keys)
 
     count = 0
-    for i, key in enumerate(keys):
+    for key in keys:
         initiate_econ_feed(queue_name, bucket_name, key, workflow_name)
         count += 1
         if working:
@@ -39,11 +39,11 @@ def get_filtered_keys(bucketname, prefix, key_filter):
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Paginator.ListObjects
     paginator = client.get_paginator('list_objects')
     bucket_object_list_resp = paginator.paginate(Bucket=bucketname, Prefix=prefix)
-    bucket_object_list = bucket_object_list_resp['Contents']
+    keys = bucket_object_list_resp['Contents']
 
     # the list method is a generator and efficiently handles paging over a large
     # set of results so we will maintain this while filtering using another generator
-    for key in bucket_object_list:
+    for key in keys:
         valid = True
         if prefix is not None and not key['Name'].startswith(prefix):
             valid = False

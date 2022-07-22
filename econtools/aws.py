@@ -1,7 +1,6 @@
 import boto3
 import os, sys, json
 
-
 def get_client(service, **conn_kwargs_overrides):
     region = os.environ.get('AWS_DEFAULT_REGION')
     if not region:
@@ -22,7 +21,6 @@ def get_client(service, **conn_kwargs_overrides):
     return boto3.client(service, **conn_kwargs)
 
 def get_queue(queue_name):
-
     try:
         client = get_client('sqs')
         queue_url = client.get_queue_url(QueueName=queue_name)
