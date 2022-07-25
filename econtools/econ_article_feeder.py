@@ -38,8 +38,8 @@ def get_filtered_keys(bucketname, prefix, key_filter):
     client = aws.get_client('s3')
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Paginator.ListObjects
     paginator = client.get_paginator('list_objects')
-    bucket_object_list_resp = paginator.paginate(Bucket=bucketname, Prefix=prefix)
-    keys = bucket_object_list_resp['Contents']
+    bucket_object_list = paginator.paginate(Bucket=bucketname, Prefix=prefix)
+    keys = bucket_object_list['Contents']
 
     # the list method is a generator and efficiently handles paging over a large
     # set of results so we will maintain this while filtering using another generator

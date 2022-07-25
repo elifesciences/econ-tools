@@ -1,14 +1,14 @@
 import boto3
 import os, sys, json
 
-def get_client(service, **conn_kwargs_overrides):
+def get_client(service):
     region = os.environ.get('AWS_DEFAULT_REGION')
     if not region:
         print("environment variable 'AWS_DEFAULT_REGION' not set")
         sys.exit(1)
 
     # https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html#botocore-config
-    conn_kwargs_defaults = {
+    conn_kwargs = {
         'region_name': region,
         'connect_timeout': 5, # seconds, default 60
         'read_timeout': 5, # seconds, default 60
@@ -17,7 +17,6 @@ def get_client(service, **conn_kwargs_overrides):
             'mode': 'adaptive'
         }
     }
-    conn_kwargs = conn_kwargs_defaults.update(conn_kwargs_overrides)
     return boto3.client(service, **conn_kwargs)
 
 def get_queue(queue_name):
