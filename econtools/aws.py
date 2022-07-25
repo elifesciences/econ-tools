@@ -6,16 +6,8 @@ def get_client(service):
     if not region:
         print("environment variable 'AWS_DEFAULT_REGION' not set")
         sys.exit(1)
-
-    # https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html#botocore-config
     conn_kwargs = {
         'region_name': region,
-        'connect_timeout': 5, # seconds, default 60
-        'read_timeout': 5, # seconds, default 60
-        'retries': {
-            'total_max_attempts': 3,
-            'mode': 'adaptive'
-        }
     }
     return boto3.client(service, **conn_kwargs)
 

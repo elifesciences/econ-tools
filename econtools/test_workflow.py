@@ -11,8 +11,7 @@ def test_start_workflow():
     expected_message_body = {
         'workflow_name': workflow_name,
         'workflow_data': {}}
-    expected = call(**{'QueueUrl': queue_name,
-                       'MessageBody': json.dumps(expected_message_body)})
+    expected = call(QueueUrl=queue_name, MessageBody=json.dumps(expected_message_body))
 
     with patch('econtools.aws.get_queue', return_value=(queue_mock, queue_name)):
         econ_workflow.start_workflow(queue_name, workflow_name)

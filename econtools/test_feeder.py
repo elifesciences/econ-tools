@@ -24,7 +24,7 @@ class TestFeeder(unittest.TestCase):
             call(queue_name, bucket_name, 'elife-12345-vor-r1.zip', workflow_name),
             call(queue_name, bucket_name, 'elife-67890-vor-r1.zip', workflow_name)
         ]
-        econ_article_feeder.feed_econ(bucket_name, queue_name, workflow_name='MyArticleWorkflow')
+        econ_article_feeder.feed_econ(bucket_name, queue_name, workflow_name=workflow_name)
         self.assertEqual(initiate_econ_feed.mock_calls, expected)
 
         expected_sleeps = [
