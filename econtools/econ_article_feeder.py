@@ -2,15 +2,12 @@
 feeds arbitrary article zip files into the continuum publishing workflow"""
 
 from optparse import OptionParser
-from boto.s3.connection import S3Connection
 from datetime import datetime
-import boto.sqs
-import boto.sqs.connection
 import time
 import re
 import json
 import sys
-from econtools.aws import get_queue
+from econtools import aws
 
 
 def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, working=False, workflow_name="InitialArticleZip"):
@@ -24,13 +21,12 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
     message += "Feeding Workflow: %s" % workflow_name
     print(message)
 
-    queue = get_queue(queue_name)
     keys = get_filtered_keys(bucket_name, prefix, key_filter)
     print(keys)
 
     count = 0
     for key in keys:
-        initiate_econ_feed(queue, key, workflow_name)
+        initiate_econ_feed(queue_name, bucket_name, key, workflow_name)
         count += 1
         if working:
             sys.stdout.write('.')
@@ -39,30 +35,32 @@ def feed_econ(bucket_name, queue_name, rate=30, prefix=None, key_filter=None, wo
 
 
 def get_filtered_keys(bucketname, prefix, key_filter):
-    conn = S3Connection()
-    bucket = conn.get_bucket(bucketname)
-    keys = bucket.list(prefix=prefix)
+    client = aws.get_client('s3')
+    # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Paginator.ListObjects
+    paginator = client.get_paginator('list_objects')
+    response_iterator = paginator.paginate(Bucket=bucketname, Prefix=prefix)
 
     # the list method is a generator and efficiently handles paging over a large
     # set of results so we will maintain this while filtering using another generator
-    for key in keys:
-        valid = True
-        if prefix is not None and not key.name.startswith(prefix):
-            valid = False
-        if key_filter is not None and not re.match(key_filter, key.name):
-            valid = False
-        if valid:
-            yield key
+    for response in response_iterator:
+        for key in response['Contents']:
+            valid = True
+            if prefix is not None and not key['Key'].startswith(prefix):
+                valid = False
+            if key_filter is not None and not re.match(key_filter, key['Key']):
+                valid = False
+            if valid:
+                yield key
 
 
-def initiate_econ_feed(queue, key, workflow_name):
+def initiate_econ_feed(queue_name, bucket_name, key, workflow_name):
     file_info = {
         'event_name': 'ObjectCreated:Put',
         'event_time': now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
-        'bucket_name': key.bucket.name,
-        'file_name': key.name,
-        'file_etag': key.etag.strip("\""),
-        'file_size': key.size
+        'bucket_name': bucket_name,
+        'file_name': key['Key'],
+        'file_etag': key['ETag'].strip("\""),
+        'file_size': key['Size']
     }
 
     message = {
@@ -70,12 +68,11 @@ def initiate_econ_feed(queue, key, workflow_name):
         'workflow_data': file_info
     }
 
-    msg = boto.sqs.connection.Message()
-    msg.set_body(json.dumps(message))
-    queue.write(msg)
+    aws.send_message(queue_name, message)
 
 def now():
-    return datetime.now()
+    # lsh@2022-07-22: changed from `.now` to `.utcnow`
+    return datetime.utcnow()
 
 usage = "usage: %prog [options] bucket_name workflow_starter_queue InitialArticleZip"
 
@@ -101,10 +98,10 @@ if __name__ == "__main__":
     options, args = get_options()
 
     if len(args) > 2:
-        # args[0] = bucket_name, args[1] = queue_name args[2] = WorkflowName
-        feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working, args[2])
+        bucket_name, queue_name, workflow_name = args[:3]
+        feed_econ(bucket_name, queue_name, options.rate, options.prefix, options.filter, options.working, workflow_name)
     elif len(args) == 2:
-        # args[0] = bucket_name, args[1] = queue_name
+        bucket_name, queue_name = args[:2]
         feed_econ(args[0], args[1], options.rate, options.prefix, options.filter, options.working)
     else:
         print(usage)

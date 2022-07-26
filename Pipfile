@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
 
 [packages]
-boto = "~=2.49"
+boto3 = "~=1.24"
 
 [dev-packages]
 coverage = "~=5.0"

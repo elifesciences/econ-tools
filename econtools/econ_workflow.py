@@ -5,22 +5,16 @@ econ_workflow.py - starts arbitrary continuum publishing workflows
 
 from argparse import ArgumentParser
 import json
-import boto.sqs
-import boto.sqs.connection
-from econtools.aws import get_queue
+from econtools import aws
 
 
 def start_workflow(queue_name, workflow_name, workflow_data={}):
-
-    queue = get_queue(queue_name)
     message = {
         'workflow_name': workflow_name,
         'workflow_data': workflow_data,
     }
+    aws.send_message(queue_name, message)
 
-    msg = boto.sqs.connection.Message()
-    msg.set_body(json.dumps(message))
-    queue.write(msg)
 
 def get_args():
     usage = "example usage: %prog workflow_starter_queue IngestArticleZip"
