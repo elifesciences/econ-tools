@@ -46,7 +46,7 @@ workflow.
 Usage:
 
     econ_article_feeder.py [options] bucket_name workflow_starter_queue_name workflow_name
-    $ python econtools/econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue InitialArticleZip
+    $ python econtools/econ_article_feeder.py -p elife-14721-vor-r1 -r 1  elife-production-final workflow-starter-queue IngestArticleZip
     
 Options:
 
