@@ -38,19 +38,19 @@ def get_filtered_keys(bucketname, prefix, key_filter):
     client = aws.get_client('s3')
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Paginator.ListObjects
     paginator = client.get_paginator('list_objects')
-    bucket_object_list = paginator.paginate(Bucket=bucketname, Prefix=prefix)
-    keys = bucket_object_list['Contents']
+    response_iterator = paginator.paginate(Bucket=bucketname, Prefix=prefix)
 
     # the list method is a generator and efficiently handles paging over a large
     # set of results so we will maintain this while filtering using another generator
-    for key in keys:
-        valid = True
-        if prefix is not None and not key['Name'].startswith(prefix):
-            valid = False
-        if key_filter is not None and not re.match(key_filter, key['Name']):
-            valid = False
-        if valid:
-            yield key
+    for response in response_iterator:
+        for key in response['Contents']:
+            valid = True
+            if prefix is not None and not key['Key'].startswith(prefix):
+                valid = False
+            if key_filter is not None and not re.match(key_filter, key['Key']):
+                valid = False
+            if valid:
+                yield key
 
 
 def initiate_econ_feed(queue_name, bucket_name, key, workflow_name):
@@ -58,7 +58,7 @@ def initiate_econ_feed(queue_name, bucket_name, key, workflow_name):
         'event_name': 'ObjectCreated:Put',
         'event_time': now().isoformat() + "Z",  # ISO_8601 e.g. 1970-01-01T00:00:00.000Z
         'bucket_name': bucket_name,
-        'file_name': key['Name'],
+        'file_name': key['Key'],
         'file_etag': key['ETag'].strip("\""),
         'file_size': key['Size']
     }

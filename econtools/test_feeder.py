@@ -42,7 +42,7 @@ class TestFeeder(unittest.TestCase):
         get_queue.return_value = [queue_mock, queue_name]
         bucket_name = 'ct-elife-production-final'
         key = {
-            'Name': 'elife-12345-vor-r1.zip',
+            'Key': 'elife-12345-vor-r1.zip',
             'ETag': '"123"',
             'Size': 2 * 1024 * 1024
         }
