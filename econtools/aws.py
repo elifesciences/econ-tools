@@ -14,7 +14,8 @@ def get_client(service):
 def get_queue(queue_name):
     try:
         client = get_client('sqs')
-        queue_url = client.get_queue_url(QueueName=queue_name)
+        response = client.get_queue_url(QueueName=queue_name)
+        queue_url = response.get("QueueUrl")
         return client, queue_url
     except Exception as exc:
         print("Unhandled exception obtaining workflow starter queue %r: %s\n" % (exc, queue_name,))
