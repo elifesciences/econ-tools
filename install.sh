@@ -5,4 +5,5 @@ if [ ! -d venv/bin/python3 ]; then
     python3 -m venv venv
 fi
 source venv/bin/activate
+pip install pip wheel --upgrade
 pip install -r requirements.txt
