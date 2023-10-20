@@ -4,8 +4,9 @@ from setuptools import setup
 with open('README.md') as fp:
     readme = fp.read()
 
-with open('requirements.txt') as f:
-    install_requires = f.read().splitlines()
+install_requires = [
+    "boto3<2.0.0",
+]
 
 setup(name='econtools',
     version=econtools.__version__,
