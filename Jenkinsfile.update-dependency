@@ -19,5 +19,6 @@ elifeUpdatePipeline(
         }
     },
     "update_${params.package}/",
-    library=true
+    library=true,
+    base_branch‎="master"
 )
